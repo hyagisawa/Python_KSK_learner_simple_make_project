@@ -77,7 +77,7 @@ live_sim_list: list[str] = [
 
 target_folder_name_pattern = r"KSK_R6_SANSU_\d.+_T"
 
-pattern_json: str = r"^[\s\S]*?({[\s\S]*?});"  # config ファイルから、JSON 部分を取得
+pattern_json: str = r"^[\s\S]*?({[\s\S]*?});|^[\s\S]*?({[\s\S]*?})"  # config ファイルから、JSON 部分を取得
 path_to_me: Path = Path(__file__).resolve().parent  # スクリプトの設置されたバス
 pattern_ID: str = r"^(KSK_R6_SANSU_\d_)T$|^(KSK_R6_SANSU_\d[AB]_)T$"  # 指導者用設定ファイルにマッチ
 
@@ -370,6 +370,7 @@ if __name__ == "__main__":
             j = json.loads(json_data, strict=False)  # JSON 文字列を Ptyon 辞書型に変換
 
         except json.JSONDecodeError as e:
+            print(fl.name)
             print(f"JSONデータのパースエラー: {e}")
             continue
 
