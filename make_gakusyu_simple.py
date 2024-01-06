@@ -75,9 +75,9 @@ live_sim_list: list[str] = [
 ]
 
 
-target_folder_name_pattern = r"KSK_R6_SANSU_\d.+_T"
+target_folder_name_pattern = r"KSK_R6_SANSU_\d_T|KSK_R6_SANSU_\d[AB]_T"
 
-pattern_json: str = r"^[\s\S]*?({[\s\S]*?});|^[\s\S]*?({[\s\S]*?})"  # config ファイルから、JSON 部分を取得
+pattern_json: str = r"^[\s\S]*?({[\s\S]*?});"  # config ファイルから、JSON 部分を取得
 path_to_me: Path = Path(__file__).resolve().parent  # スクリプトの設置されたバス
 pattern_ID: str = r"^(KSK_R6_SANSU_\d_)T$|^(KSK_R6_SANSU_\d[AB]_)T$"  # 指導者用設定ファイルにマッチ
 
@@ -100,8 +100,8 @@ def point_sim(s: str, l: list[str]) -> bool:
     """
     f: bool = False
 
-    for s in l:
-        if s == s:
+    for p in l:
+        if s == p:
             f = True
             break
 
@@ -255,9 +255,11 @@ def remove_source_cp(pageInfos: list[dict]) -> list[dict]:
                 and None != re.search(r"^s\d-\d{1,}$", appId)
             ):
                 if point_sim(appId, live_sim_list) == False:
+                    
                     # シミュレーションアプリのバックアップ
                     folder_backup(app_folder.joinpath(appId), True)
                     l.append(i)
+                    
 
             # ズーム
             elif resType == 6 and resLinkType == 0:
